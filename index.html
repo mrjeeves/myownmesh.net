@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyOwnMesh — peer-to-peer mesh, pure Rust, embed it in anything</title>
+  <meta name="description" content="A peer-to-peer mesh networking stack in pure Rust. Daemon, library, and desktop GUI. Trystero-wire-compatible Nostr signaling, ed25519 mutual auth, selectable topologies." />
+  <link rel="stylesheet" href="styles.css" />
+  <meta property="og:title" content="MyOwnMesh" />
+  <meta property="og:description" content="Peer-to-peer mesh networking stack in pure Rust — embed it in anything." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://myownmesh.net/" />
+  <meta name="theme-color" content="#0f0f0f" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">MyOwnMesh</div>
+      <nav class="topnav">
+        <a href="#features">Features</a>
+        <a href="#start">Get started</a>
+        <a href="#embed">Embed</a>
+        <a href="#platforms">Platforms</a>
+        <a href="#docs">Docs</a>
+        <a class="gh" href="https://github.com/mrjeeves/MyOwnMesh" aria-label="GitHub repository">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path fill="currentColor" d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.4-1.3-5.4-5.9 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.2 3 .1 3.3.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.4 5.9.4.4.8 1.1.8 2.3v3.4c0 .3.2.7.8.6A12 12 0 0 0 12 .5"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <h1>The peer-to-peer mesh<br />underneath <a class="link" href="https://github.com/mrjeeves/MyOwnLLM">MyOwnLLM</a>.</h1>
+        <p class="lede">
+          Pure Rust. Headless daemon, embeddable library, and a desktop GUI —
+          all in one workspace. Trystero-wire-compatible Nostr signaling,
+          ed25519 mutual auth with eyeballs, and a seven-tier reconnection
+          ladder that survives sleep, NAT churn, and ICE failures.
+        </p>
+        <div class="cta-row">
+          <a class="btn primary" href="#start">Get started</a>
+          <a class="btn ghost" href="https://github.com/mrjeeves/MyOwnMesh/releases">Download release</a>
+        </div>
+        <div class="badge-row">
+          <span class="badge">MIT</span>
+          <span class="badge">macOS · Linux · Windows · Pi</span>
+          <span class="badge good">98 tests passing</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="personas">
+      <div class="inner">
+        <h2>One workspace, three personas</h2>
+        <div class="persona-grid">
+          <div class="persona">
+            <div class="persona-tag">bin</div>
+            <div class="persona-name"><code>myownmesh</code></div>
+            <div class="persona-desc">Headless daemon + CLI.</div>
+            <div class="persona-path">crates/myownmesh</div>
+          </div>
+          <div class="persona">
+            <div class="persona-tag">lib</div>
+            <div class="persona-name"><code>myownmesh-core</code></div>
+            <div class="persona-desc">Runtime, engine, protocol. Embed it in anything.</div>
+            <div class="persona-path">crates/myownmesh-core</div>
+          </div>
+          <div class="persona">
+            <div class="persona-tag">app</div>
+            <div class="persona-name"><code>myownmesh-gui</code></div>
+            <div class="persona-desc">Desktop GUI — Tauri + Svelte 5, a client of the daemon.</div>
+            <div class="persona-path">gui/</div>
+          </div>
+        </div>
+        <p class="persona-foot">
+          Plus two supporting libraries the daemon and embedders share:
+          <code>myownmesh-signaling</code> (Nostr driver + LocalBroker) and
+          <code>myownmesh-updater</code> (self-update with configurable feed).
+        </p>
+      </div>
+    </section>
+
+    <section id="features" class="features">
+      <div class="inner">
+        <h2>What it gives you</h2>
+        <div class="feature-grid">
+          <article class="feature">
+            <h3>ed25519 mutual auth, with eyeballs</h3>
+            <p>
+              Every peer encounter exchanges a <code>hello</code> + <code>auth_response</code>
+              where each side signs the other's nonce under
+              <code>myownmesh-mesh-auth-v1:</code>. A 6-char
+              <code>[a-z0-9]</code> verification code rides along for
+              out-of-band confirmation — "the code I see matches what you
+              read me". Approved peers land in a per-network roster and skip
+              the prompt on reconnect.
+            </p>
+          </article>
+
+          <article class="feature">
+            <h3>A 7-tier reconnection ladder</h3>
+            <p>
+              Steady → Wake probe → ICE watchdog → ICE restart →
+              Re-handshake → Room rejoin → Stop-and-start. Each tier is the
+              cheapest action that still recovers from the failure class
+              above it. Every tunable constant is documented in
+              <code>CONNECTION-ENGINE.md</code> with the field bug it was
+              discovered through.
+            </p>
+          </article>
+
+          <article class="feature">
+            <h3>Trystero-wire-compatible Nostr signaling</h3>
+            <p>
+              Same room-handle derivation as JS Trystero v0.24
+              (<code>SHA-256(app_id || ":" || network_id)</code>), same
+              deterministic relay shuffle. Five published-fix patches against
+              <code>@trystero-p2p/core</code> are baked in natively —
+              catalogued in source so upstream-tracking is a code-level diff,
+              not a <code>patches/</code> folder.
+            </p>
+          </article>
+
+          <article class="feature">
+            <h3>Selectable topologies</h3>
+            <p>
+              <strong>Ring</strong> (default, sorted-lex with 2 neighbours +
+              shortcuts), <strong>Star</strong> (explicit hub), and
+              <strong>FullMesh</strong>. All built on the same shelving
+              primitive; both sides of every pair run the same pure-function
+              selector over the same sorted input, so the result is symmetric
+              without coordination.
+            </p>
+          </article>
+
+          <article class="feature">
+            <h3>Typed pub/sub + generic RPC</h3>
+            <p>
+              <code>Channel&lt;T&gt;</code> is a typed publish/subscribe
+              channel keyed by name. <code>Rpc::call</code> / <code>serve</code>
+              / <code>call_stream</code> / <code>serve_stream</code> is the
+              generic request/response surface. Embedders define their own
+              message types — the mesh treats payloads opaquely.
+            </p>
+          </article>
+
+          <article class="feature">
+            <h3>Embed without the GUI or updater</h3>
+            <p>
+              The daemon, the library, and the desktop GUI are separate
+              crates. An app embedding <code>myownmesh-core</code> doesn't
+              pull in the HTTP self-updater or the Tauri stack. The GUI
+              itself is a <em>client</em> of the daemon (over a local control
+              socket) so crashing the UI never disturbs the running mesh.
+            </p>
+          </article>
+
+          <article class="feature">
+            <h3>One identity, many networks</h3>
+            <p>
+              Per-device long-lived ed25519 keypair under
+              <code>~/.myownmesh/.secrets/identity.json</code> (0600).
+              Per-network rosters at
+              <code>~/.myownmesh/mesh/rosters/{network_id}.json</code>.
+              Switching the active network swaps rosters but preserves
+              identity.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="start" class="start">
+      <div class="inner">
+        <h2>Get started</h2>
+        <p class="section-lede">
+          Pick the persona that matches what you're doing — none of them
+          depend on each other, so any combination works on the same box.
+        </p>
+
+        <div class="card">
+          <h3>1. Run a node (pre-built daemon)</h3>
+          <p>
+            Pre-built binaries land on
+            <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/releases">GitHub Releases</a>
+            for every tagged version — portable headless binaries
+            (<code>myownmesh-&lt;platform&gt;.{tar.gz,zip}</code> +
+            <code>.sha256</code> sidecar) for all five platforms in the
+            matrix. <code>myownmesh update</code> self-applies against
+            the same artifacts once a newer release is published.
+          </p>
+<pre><code><span class="c"># macOS / Linux — example for linux-x86_64; replace the platform suffix as needed</span>
+curl -fsSL https://github.com/mrjeeves/MyOwnMesh/releases/latest/download/myownmesh-linux-x86_64.tar.gz | tar -xz
+./myownmesh serve</code></pre>
+<pre><code><span class="c"># Windows</span>
+Invoke-WebRequest -Uri "https://github.com/mrjeeves/MyOwnMesh/releases/latest/download/myownmesh-windows-x86_64.zip" -OutFile myownmesh.zip
+Expand-Archive myownmesh.zip
+.\myownmesh.exe serve</code></pre>
+        </div>
+
+        <div class="card">
+          <h3>2. Run a node (build from source)</h3>
+<pre><code>git clone https://github.com/mrjeeves/MyOwnMesh
+cd MyOwnMesh
+just setup                                    <span class="c"># Rust toolchain via rustup</span>
+cargo install --path crates/myownmesh         <span class="c"># daemon + CLI on $PATH</span>
+<span class="c"># or run without installing:</span>
+cargo run -p myownmesh -- serve
+<span class="c"># or with debug logging:</span>
+just serve                                    <span class="c"># MYOWNMESH_LOG=debug cargo run -p myownmesh -- serve</span></code></pre>
+        </div>
+
+        <div class="card">
+          <h3>3. Run the desktop GUI</h3>
+          <p>
+            Pre-built installers (<code>.deb</code> / <code>.AppImage</code>
+            / <code>.dmg</code> / <code>.msi</code> / <code>.exe</code>)
+            ship in the same release as the daemon. The GUI auto-spawns the
+            daemon as a child process, so installing only the GUI bundle
+            gets you both.
+          </p>
+          <p>From source, two shells:</p>
+<pre><code>just serve   <span class="c"># one shell — daemon + control socket (with debug logging)</span>
+just dev     <span class="c"># another shell — Tauri GUI with hot reload</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="embed" class="embed">
+      <div class="inner">
+        <h2>Embed in your Rust app</h2>
+        <p class="section-lede">
+          The library crates aren't on crates.io yet — pull them as git
+          dependencies pinned to a release tag. Cargo dedupes git deps by
+          URL, so both crates resolve out of the same checkout.
+        </p>
+
+<pre><code><span class="c">[dependencies]</span>
+myownmesh-core      = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "v0.1.0" }
+myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "v0.1.0" }  <span class="c"># Nostr driver</span>
+tokio = { version = "1", features = ["full"] }</code></pre>
+
+<pre><code>use myownmesh_core::{Mesh, MeshConfig, NetworkConfig, TopologyMode};
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mesh = Mesh::open(MeshConfig::load().unwrap_or_default()).await?;
+
+    let net = mesh.join(NetworkConfig {
+        id: "home".into(),
+        network_id: "my-cool-mesh".into(),
+        label: "Home mesh".into(),
+        topology: TopologyMode::default(),       <span class="c">// Ring</span>
+        signaling: Default::default(),            <span class="c">// Nostr defaults</span>
+        stun_servers: Default::default(),
+        turn_servers: Default::default(),
+        roster_path: None,
+        auto_approve: false,
+    }).await?;
+
+    let _nostr = myownmesh_core::engine::attach_nostr(&amp;net.state());
+
+    let mut events = mesh.events();
+    while let Ok(event) = events.recv().await {
+        println!("{event:?}");
+    }
+    Ok(())
+}</code></pre>
+
+        <p class="section-foot">
+          Override <code>MYOWNMESH_HOME=~/.yourapp/mesh</code> to keep your
+          app's identity + rosters under its own directory tree (defaults
+          to <code>~/.myownmesh/</code>). Narrative walkthrough in
+          <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/QUICKSTART.md">docs/QUICKSTART.md</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="cli">
+      <div class="inner">
+        <h2>Daemon + CLI</h2>
+<pre><code>myownmesh                  <span class="c"># start the daemon (alias for `serve`)</span>
+myownmesh serve            <span class="c"># run the daemon in foreground</span>
+myownmesh identity show    <span class="c"># print this device's id</span>
+myownmesh ctl status       <span class="c"># query a running daemon</span>
+myownmesh ctl networks list
+myownmesh update check     <span class="c"># poll the release feed</span>
+myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $EDITOR</span></code></pre>
+        <p>
+          The daemon reads <code>~/.myownmesh/config.json</code>, joins
+          every network listed there, attaches the Nostr signaling driver
+          per network, and listens for <code>myownmesh ctl …</code> clients
+          on a local socket (<code>~/.myownmesh/daemon.sock</code> on Unix,
+          named pipe on Windows).
+        </p>
+      </div>
+    </section>
+
+    <section id="platforms" class="platforms">
+      <div class="inner">
+        <h2>Platforms</h2>
+        <div class="platform-grid">
+          <div class="platform"><code>linux-x86_64</code></div>
+          <div class="platform"><code>linux-aarch64</code><span class="sub">incl. Raspberry Pi 4 / 5</span></div>
+          <div class="platform"><code>macos-aarch64</code></div>
+          <div class="platform"><code>macos-x86_64</code></div>
+          <div class="platform"><code>windows-x86_64</code></div>
+        </div>
+        <p class="section-foot">
+          The release matrix builds and uploads bundles for all five. Linux
+          is pinned to Ubuntu 22.04 (glibc 2.35) so binaries run on
+          Debian 12, Ubuntu 22.04+, and other distros still on glibc
+          2.35 / 2.36 / 2.38.
+        </p>
+      </div>
+    </section>
+
+    <section id="docs" class="docs">
+      <div class="inner">
+        <h2>Docs</h2>
+        <div class="doc-grid">
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/QUICKSTART.md">
+            <div class="doc-name">QUICKSTART</div>
+            <div class="doc-desc">Embedder walkthrough — identity, joining a network, channels, RPC, clean shutdown.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/PROTOCOL.md">
+            <div class="doc-name">PROTOCOL</div>
+            <div class="doc-desc">Wire-protocol reference — frames, handshake, message types.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/NETWORK-TYPES.md">
+            <div class="doc-name">NETWORK-TYPES</div>
+            <div class="doc-desc">Open vs closed networks — design, decisions locked, awaiting implementation.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/ARCHITECTURE.md">
+            <div class="doc-name">ARCHITECTURE</div>
+            <div class="doc-desc">Crate layout, trust model, persistent state, lineage from MyOwnLLM.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/CONNECTION-ENGINE.md">
+            <div class="doc-name">CONNECTION-ENGINE</div>
+            <div class="doc-desc">The 7-tier reconnection ladder, every tunable, every edge case.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/CONTRIBUTING.md">
+            <div class="doc-name">CONTRIBUTING</div>
+            <div class="doc-desc">Setup, code conventions, protocol-message checklist, topology-mode checklist.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/RELEASE.md">
+            <div class="doc-name">RELEASE</div>
+            <div class="doc-desc">Cutting a release — bump-version, tag, artifact catalogue.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/gui/README.md">
+            <div class="doc-name">GUI</div>
+            <div class="doc-desc">Desktop GUI layout + wire protocol against the daemon.</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div class="foot-brand">MyOwnMesh</div>
+      <div class="foot-links">
+        <a href="https://github.com/mrjeeves/MyOwnMesh">GitHub</a>
+        <a href="https://github.com/mrjeeves/MyOwnMesh/releases">Releases</a>
+        <a href="https://github.com/mrjeeves/MyOwnLLM">MyOwnLLM</a>
+        <a href="https://github.com/mrjeeves/MyOwnMesh/blob/main/LICENSE">MIT</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
