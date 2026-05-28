@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MyOwnMesh — peer-to-peer mesh networking in pure Rust</title>
   <meta name="description" content="A pure-Rust peer-to-peer substrate for apps whose devices need to find and talk to each other directly. Embed it as a library, run it as a daemon, or drive it with the desktop GUI." />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
   <meta property="og:title" content="MyOwnMesh — peer-to-peer mesh networking" />
   <meta property="og:description" content="Devices on the same network ID find each other through public Nostr relays, then talk over encrypted WebRTC. No central server, no port forwarding, no static IPs." />
   <meta property="og:type" content="website" />
@@ -311,8 +311,8 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
             <div class="status-value">Not yet. Use git dependencies pinned to a release tag.</div>
           </div>
           <div class="status-item">
-            <div class="status-label">Closed networks</div>
-            <div class="status-value">Designed in <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/NETWORK-TYPES.md">docs/NETWORK-TYPES.md</a>, decisions locked, awaiting implementation. Only open networks ship today.</div>
+            <div class="status-label">Network governance</div>
+            <div class="status-value">Both <em>open</em> (default — any member writes to the roster) and <em>closed</em> (Member / Controller / Owner roles, authority enforced on the wire) ship today. Lifecycle in <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/NETWORK-TYPES.md">docs/NETWORK-TYPES.md</a>.</div>
           </div>
           <div class="status-item">
             <div class="status-label">Field testing</div>
@@ -336,7 +336,7 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
           </a>
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/NETWORK-TYPES.md">
             <div class="doc-name">NETWORK-TYPES</div>
-            <div class="doc-desc">Open vs closed networks — design, decisions locked, awaiting implementation.</div>
+            <div class="doc-desc">Open vs closed networks — role tiers, signed transitions, split + recovery.</div>
           </a>
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/ARCHITECTURE.md">
             <div class="doc-name">ARCHITECTURE</div>
