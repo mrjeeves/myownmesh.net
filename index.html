@@ -53,7 +53,7 @@
         </div>
         <div class="badge-row">
           <span class="badge">MIT</span>
-          <span class="badge">v0.1.2 · alpha</span>
+          <span class="badge"><span id="version-badge">v0.1.3</span> · alpha</span>
           <span class="badge">macOS · Linux · Windows · Pi</span>
         </div>
       </div>
@@ -146,8 +146,8 @@ cargo install --path crates/myownmesh         <span class="c"># myownmesh on $PA
           so both crates resolve out of the same checkout.
         </p>
 <pre><code><span class="c">[dependencies]</span>
-myownmesh-core      = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "v0.1.2" }
-myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "v0.1.2" }  <span class="c"># Nostr driver</span>
+myownmesh-core      = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.1.3</span>" }
+myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.1.3</span>" }  <span class="c"># Nostr driver</span>
 tokio = { version = "1", features = ["full"] }</code></pre>
 <pre><code>use myownmesh_core::{Mesh, MeshConfig, NetworkConfig, TopologyMode};
 
@@ -304,7 +304,7 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
         <div class="status-grid">
           <div class="status-item">
             <div class="status-label">Version</div>
-            <div class="status-value">0.1.2 — alpha. Wire format and API may still move; pin git tags.</div>
+            <div class="status-value"><span id="version-status">0.1.3</span> — alpha. Wire format and API may still move; pin git tags.</div>
           </div>
           <div class="status-item">
             <div class="status-label">Library on crates.io</div>
@@ -382,37 +382,6 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var tabs = document.querySelectorAll('.install-tabs .tab');
-      var panels = document.querySelectorAll('.install-snippet');
-      if (!tabs.length || !panels.length) return;
-
-      function activate(os) {
-        tabs.forEach(function (t) {
-          var on = t.dataset.os === os;
-          t.classList.toggle('active', on);
-          t.setAttribute('aria-selected', on ? 'true' : 'false');
-        });
-        panels.forEach(function (p) {
-          p.classList.toggle('active', p.dataset.os === os);
-        });
-      }
-
-      // Default to whatever the markup said is active (Unix). Override
-      // with detected OS so visitors see the right snippet first.
-      var ua = (navigator.userAgentData && navigator.userAgentData.platform)
-        || navigator.platform
-        || navigator.userAgent
-        || '';
-      var detected = 'unix';
-      if (/win/i.test(ua)) detected = 'windows';
-      activate(detected);
-
-      tabs.forEach(function (t) {
-        t.addEventListener('click', function () { activate(t.dataset.os); });
-      });
-    })();
-  </script>
+  <script src="main.js?v=1" defer></script>
 </body>
 </html>
