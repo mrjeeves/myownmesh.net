@@ -38,6 +38,44 @@
     });
   }
 
+  // ---------- copy buttons ----------
+  // Each button carries the exact command in data-copy, so we copy a
+  // clean one-liner rather than scraping the comment line out of the
+  // <pre>. Falls back to a hidden textarea when the async clipboard API
+  // is unavailable (insecure context, older browsers).
+  function wireCopyButtons() {
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.dataset.copy || '';
+        if (!text) return;
+        let ok = false;
+        try {
+          await navigator.clipboard.writeText(text);
+          ok = true;
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { ok = document.execCommand('copy'); } catch {}
+          ta.remove();
+        }
+        const label = btn.dataset.label || btn.textContent;
+        btn.dataset.label = label;
+        btn.textContent = ok ? 'Copied' : 'Press ⌘C';
+        btn.classList.add('copied');
+        clearTimeout(btn._copyTimer);
+        btn._copyTimer = setTimeout(() => {
+          btn.textContent = label;
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    });
+  }
+
   // ---------- live version stamp ----------
   // tag_name arrives as "v0.1.3". The badge and embed snippet keep the
   // leading "v"; the status line uses the bare number to match its copy.
@@ -73,5 +111,6 @@
 
   // ---------- boot ----------
   wireInstallTabs();
+  wireCopyButtons();
   fetchLatest();
 })();

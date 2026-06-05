@@ -72,22 +72,35 @@
           <button type="button" class="tab" data-os="windows" role="tab">Windows</button>
           <button type="button" class="tab" data-os="source" role="tab">From source</button>
         </div>
-        <pre data-os="unix" class="install-snippet active"><code><span class="c"># macOS / Linux</span>
-curl -fsSL https://raw.githubusercontent.com/mrjeeves/MyOwnMesh/main/scripts/install.sh | sh</code></pre>
-        <pre data-os="windows" class="install-snippet"><code><span class="c"># Windows (PowerShell)</span>
-irm https://raw.githubusercontent.com/mrjeeves/MyOwnMesh/main/scripts/install.ps1 | iex</code></pre>
-        <pre data-os="source" class="install-snippet"><code><span class="c"># From source — needs cargo (https://rustup.rs)</span>
+        <div data-os="unix" class="install-snippet active">
+          <pre><code><span class="c"># macOS / Linux</span>
+curl -fsSL https://myownmesh.net/install.sh | sh</code></pre>
+          <button type="button" class="copy-btn" data-copy="curl -fsSL https://myownmesh.net/install.sh | sh" aria-label="Copy install command">Copy</button>
+        </div>
+        <div data-os="windows" class="install-snippet">
+          <pre><code><span class="c"># Windows (PowerShell)</span>
+irm https://myownmesh.net/install.ps1 | iex</code></pre>
+          <button type="button" class="copy-btn" data-copy="irm https://myownmesh.net/install.ps1 | iex" aria-label="Copy install command">Copy</button>
+        </div>
+        <div data-os="source" class="install-snippet">
+          <pre><code><span class="c"># From source — needs cargo (https://rustup.rs)</span>
 git clone https://github.com/mrjeeves/MyOwnMesh
 cd MyOwnMesh
 cargo install --path crates/myownmesh         <span class="c"># myownmesh on $PATH via ~/.cargo/bin</span></code></pre>
+          <button type="button" class="copy-btn" data-copy="git clone https://github.com/mrjeeves/MyOwnMesh &amp;&amp; cd MyOwnMesh &amp;&amp; cargo install --path crates/myownmesh" aria-label="Copy install commands">Copy</button>
+        </div>
         <p class="section-foot">
-          Then open a new terminal and run <code>myownmesh serve</code>.
-          Prefer a desktop UI? GUI bundles
-          (<code>.dmg</code> · <code>.msi</code> · <code>.exe</code> ·
-          <code>.deb</code> · <code>.AppImage</code>) ship on
-          <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/releases">GitHub Releases</a>
-          alongside the daemon and auto-spawn it as a child process —
-          installing only the GUI gets you both.
+          The script detects your platform, pulls the matching binaries
+          from <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/releases">GitHub Releases</a>,
+          verifies the SHA-256, and installs both the
+          <code>myownmesh</code> daemon and the desktop GUI — so a bare
+          <code>myownmesh</code> opens the app
+          (<code>--no-gui</code> / <code>-NoGui</code> for a headless,
+          daemon-only box). Then open a new terminal and run
+          <code>myownmesh serve</code>. Prefer a native installer? GUI
+          bundles (<code>.dmg</code> · <code>.msi</code> ·
+          <code>.exe</code> · <code>.deb</code> · <code>.AppImage</code>)
+          ship on the same releases page.
         </p>
       </div>
     </section>
