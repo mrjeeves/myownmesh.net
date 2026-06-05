@@ -310,9 +310,37 @@ section h2 {
 }
 .install-snippet {
   display: none;
+  position: relative;
+  margin: 0.5rem 0 0.25rem;
 }
 .install-snippet.active {
   display: block;
+}
+.install-snippet pre {
+  margin: 0;
+  padding-right: 4.5rem;
+}
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-family: var(--font);
+  font-size: 0.72rem;
+  color: var(--text-mute);
+  background: var(--bg-chip);
+  border: 1px solid var(--border-chip);
+  border-radius: 6px;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 120ms ease, color 120ms ease, background 120ms ease;
+}
+.copy-btn:hover {
+  border-color: var(--border-chip-hover);
+  color: var(--text-strong);
+}
+.copy-btn.copied {
+  color: var(--good);
+  border-color: var(--good);
 }
 
 /* Use cases */
