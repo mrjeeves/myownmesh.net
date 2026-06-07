@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MyOwnMesh — a private mesh network you actually own</title>
-  <meta name="description" content="Your devices find each other and talk directly over encrypted WebRTC — no central account, no port forwarding, no static IPs. And every piece of the plumbing is the same program: run it on your laptop, across a tailnet, or on your own domain." />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <meta name="description" content="Your devices find each other and talk directly over encrypted WebRTC — no account, no port forwarding, no servers you don't run. Discovery, NAT traversal, and relay are all the same program: run it on a laptop, a tailnet, or your own domain." />
+  <link rel="stylesheet" href="styles.css?v=4" />
   <meta property="og:title" content="MyOwnMesh — a private mesh network you actually own" />
-  <meta property="og:description" content="Devices on the same network ID find each other and talk over encrypted WebRTC. Run the whole stack — discovery, NAT traversal, relay — yourself, anywhere. No infrastructure you don't control." />
+  <meta property="og:description" content="Devices find each other and talk over encrypted WebRTC. Run the whole stack — discovery, NAT traversal, relay — yourself, anywhere. No infrastructure you don't control." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://myownmesh.net/" />
   <meta name="theme-color" content="#0f0f0f" />
@@ -38,21 +38,13 @@
       <div class="hero-inner">
         <h1>A private mesh network<br />you actually own.</h1>
         <p class="lede">
-          MyOwnMesh lets your devices find each other and talk
-          <em>directly</em> — encrypted end to end, with no account, no
-          port forwarding, and no static IPs. Put the same
-          <em>network ID</em> on two machines and they connect.
-        </p>
-        <p class="lede">
-          And there's nothing underneath it you don't control. Discovery,
-          NAT traversal, relaying — every piece of the plumbing is the
-          same program. Run it on your laptop, across a tailnet, or on
-          your own domain. It works out of the box, and it's exactly as
-          secure and robust when you point it at infrastructure you run.
+          Your devices find each other and talk <em>directly</em> —
+          encrypted end to end. No account, no port forwarding, no static
+          IPs, and no servers you don't run.
         </p>
         <div class="cta-row">
           <a class="btn primary" href="/download.html">Download the app</a>
-          <a class="btn ghost" href="#get">Install in one command</a>
+          <a class="btn ghost" href="#get">Install from the terminal</a>
         </div>
         <div class="badge-row">
           <span class="badge">MIT</span>
@@ -62,19 +54,51 @@
       </div>
     </section>
 
+    <section class="show">
+      <div class="inner">
+        <h2>Same network ID, and they're talking.</h2>
+        <div class="term-grid">
+          <div class="term">
+            <div class="term-bar">
+              <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+              <span class="term-cap">two machines, one network</span>
+            </div>
+<div class="term-body"><span class="p">$</span> <span class="cmd">myownmesh serve</span>
+signaling: online — listening in room <span class="v">a1b2c3d4…</span>
+peer <span class="v">6f2e…</span> discovered → connecting
+peer <span class="v">6f2e…</span> <span class="on">ACTIVE</span>   direct · 14 ms
+peer <span class="v">9c81…</span> <span class="on">ACTIVE</span>   relay  · 38 ms</div>
+          </div>
+          <div class="term">
+            <div class="term-bar">
+              <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+              <span class="term-cap">go public over wss:// — one command</span>
+            </div>
+<div class="term-body"><span class="p">$</span> <span class="cmd">myownmesh install caddy myownmesh.com</span>
+<span class="ok">✓</span> Caddy installed.
+<span class="ok">✓</span> Wrote reverse-proxy block to /etc/caddy/Caddyfile
+<span class="ok">✓</span> Reloaded Caddy.
+Done. Peers can now reach you at  <span class="v">wss://myownmesh.com</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="get" class="install">
       <div class="inner">
         <h2>Get it</h2>
         <p class="section-lede">
-          The desktop app is the easiest way in — a native bundle with
-          the daemon built in, so a bare <code>myownmesh</code> just opens
-          the app. Prefer the terminal? One command installs both.
+          The desktop app bundles the daemon, so a bare
+          <code>myownmesh</code> just opens it. Or grab a build straight off
+          the <a class="link" href="/download.html">downloads page</a>:
         </p>
-        <div class="cta-row">
-          <a class="btn primary" href="/download.html">Desktop downloads
-            (<code>.dmg</code> · <code>.msi</code> · <code>.deb</code> ·
-            <code>.AppImage</code>)</a>
+        <div class="get-row">
+          <a class="dl-btn dl-btn-primary" href="/download.html"><span class="dl-btn-title">macOS</span><span class="dl-btn-file">.dmg</span></a>
+          <a class="dl-btn" href="/download.html"><span class="dl-btn-title">Windows</span><span class="dl-btn-file">.msi · .exe</span></a>
+          <a class="dl-btn" href="/download.html"><span class="dl-btn-title">Linux</span><span class="dl-btn-file">.deb · .AppImage</span></a>
+          <a class="dl-btn" href="/download.html"><span class="dl-btn-title">Raspberry Pi</span><span class="dl-btn-file">arm64</span></a>
         </div>
+        <p class="section-lede">Prefer the terminal? One line installs the daemon and the app:</p>
         <div class="install-tabs" role="tablist" aria-label="Install platform">
           <button type="button" class="tab" data-os="unix" role="tab">macOS / Linux</button>
           <button type="button" class="tab" data-os="windows" role="tab">Windows</button>
@@ -94,64 +118,30 @@ irm https://myownmesh.net/install.ps1 | iex</code></pre>
           <pre><code><span class="c"># From source — needs cargo (https://rustup.rs)</span>
 git clone https://github.com/mrjeeves/MyOwnMesh
 cd MyOwnMesh
-cargo install --path crates/myownmesh         <span class="c"># myownmesh on $PATH via ~/.cargo/bin</span></code></pre>
+cargo install --path crates/myownmesh</code></pre>
           <button type="button" class="copy-btn" data-copy="git clone https://github.com/mrjeeves/MyOwnMesh &amp;&amp; cd MyOwnMesh &amp;&amp; cargo install --path crates/myownmesh" aria-label="Copy install commands">Copy</button>
         </div>
-        <p class="section-foot">
-          The script detects your platform, pulls the matching binaries
-          from <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/releases">GitHub Releases</a>,
-          verifies the SHA-256, and installs both the
-          <code>myownmesh</code> daemon and the desktop GUI — so a bare
-          <code>myownmesh</code> opens the app
-          (<code>--no-gui</code> / <code>-NoGui</code> for a headless,
-          daemon-only box). Then open a new terminal and run
-          <code>myownmesh serve</code>. The
-          <a class="link" href="/download.html">downloads page</a> has the
-          native installers, the portable daemon binary, and checksums.
-        </p>
       </div>
     </section>
 
     <section id="use-cases" class="use-cases">
       <div class="inner">
         <h2>What you build with it</h2>
-        <p class="section-lede">
-          Three shapes the substrate was designed for. The library
-          treats payloads opaquely, so anything you can serialize fits.
-        </p>
         <div class="use-grid">
           <article class="use">
             <div class="use-tag">case 1</div>
             <h3>One app across every device you own</h3>
-            <p>
-              Your phone, laptop, workstation, and a Pi in the closet —
-              all on the same network ID, all finding each other and
-              sharing work or state directly. No account to sign into, no
-              API key, no broker in the middle. The devices <em>are</em>
-              the service.
-            </p>
+            <p>Phone, laptop, workstation, a Pi in the closet — same network ID, all sharing work and state directly. No account, no broker. The devices <em>are</em> the service.</p>
           </article>
           <article class="use">
             <div class="use-tag">case 2</div>
-            <h3>Peer-to-peer inside your own Rust app</h3>
-            <p>
-              Add <code>myownmesh-core</code> as a git dependency,
-              define your message types, and your app's devices start
-              talking to each other in roughly fifteen lines of code.
-              No GUI baggage, no HTTP self-updater, no Tauri — the
-              library crate keeps the surface narrow.
-            </p>
+            <h3>P2P inside your own Rust app</h3>
+            <p>Add <code>myownmesh-core</code>, define your message types, and your app's devices talk to each other in ~15 lines. No GUI, no Tauri — a narrow library surface.</p>
           </article>
           <article class="use">
             <div class="use-tag">case 3</div>
-            <h3>A headless mesh on a fleet of Pis</h3>
-            <p>
-              The daemon is a single static binary that runs anywhere
-              the matrix builds. <code>linux-aarch64</code> covers
-              Raspberry Pi 4 / 5. Manage the whole fleet from one
-              desktop GUI, which talks to each daemon over its local
-              control socket.
-            </p>
+            <h3>A headless fleet of Pis</h3>
+            <p>One static binary, <code>linux-aarch64</code> included. Drive the whole fleet from a single desktop GUI over each daemon's local control socket.</p>
           </article>
         </div>
       </div>
@@ -161,57 +151,38 @@ cargo install --path crates/myownmesh         <span class="c"># myownmesh on $PA
       <div class="inner">
         <h2>Run the whole thing yourself</h2>
         <p class="section-lede">
-          A fresh install connects on the project's reference servers, so
-          it just works. But none of that is infrastructure you're stuck
-          depending on — every piece is the same <code>myownmesh</code>
-          binary, ready to host. Flip it on locally, behind a tailnet, or
-          on your own domain, and point your peers at it.
+          A fresh install connects on the project's reference servers, so it just works. But none of it is infrastructure you're stuck with — every piece is the same binary, ready to host. Flip it on and the fleet finds it.
         </p>
-        <div class="how-grid">
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+            <span class="term-cap">your box, hosting the mesh's plumbing</span>
+          </div>
+<div class="term-body"><span class="p">$</span> <span class="cmd">myownmesh ctl services status</span>
+signaling  <span class="on">●</span> running   <span class="v">:4848</span>    3 peers
+turn       <span class="on">●</span> running   <span class="v">:3478</span>    STUN + TURN <span class="dim">(STUN folds in)</span>
+relay      <span class="on">●</span> running            2 networks</div>
+        </div>
+        <div class="how-grid" style="margin-top:0.85rem">
           <article class="how-card">
-            <div class="how-step">①</div>
+            <div class="how-step">⌁</div>
             <h3>Be your own discovery</h3>
-            <p>
-              <code>myownmesh serve</code> with the signaling role on is a
-              rendezvous relay your peers connect to in place of the
-              public default. Want it reachable over <code>wss://</code>
-              from anywhere? One command stands up a TLS reverse proxy
-              that auto-provisions a certificate:
-              <code>myownmesh install caddy your-domain</code>.
-            </p>
+            <p>The signaling role is a rendezvous relay your peers use in place of the default. <code>myownmesh install caddy your-domain</code> wraps it in auto-renewing TLS for <code>wss://</code>.</p>
           </article>
           <article class="how-card">
-            <div class="how-step">②</div>
+            <div class="how-step">⌁</div>
             <h3>Be your own NAT traversal</h3>
-            <p>
-              Turn on the TURN role and you've got STUN and TURN on one
-              port for the peers that can't connect directly (symmetric
-              NAT, CGNAT, locked-down hotspots). STUN is answered by the
-              TURN listener automatically — enable both and it just runs
-              the one, nothing to wire up or trip over.
-            </p>
+            <p>Turn on TURN and you've got STUN + TURN on one port for the peers that can't go direct. Enable both and it just runs the one — nothing to wire up.</p>
           </article>
           <article class="how-card">
-            <div class="how-step">③</div>
-            <h3>Run it anywhere — it's the same mesh</h3>
-            <p>
-              On a single LAN, riding on top of a tailnet, or out on a
-              public domain: peers still find each other and connect the
-              same encrypted way, directly when the network allows and
-              relayed when it doesn't. Same security, same robustness,
-              wherever you put it.
-            </p>
+            <div class="how-step">⌁</div>
+            <h3>Anywhere — same mesh</h3>
+            <p>On a LAN, riding a tailnet, or out on a public domain: peers connect the same encrypted way, direct or relayed. Same security wherever you put it.</p>
           </article>
           <article class="how-card">
-            <div class="how-step">④</div>
-            <h3>The fleet finds your servers</h3>
-            <p>
-              A host advertises the roles it offers, so the rest of the
-              mesh discovers your relay, signaling, and STUN/TURN on its
-              own — no per-device URLs to hand out. Toggle any role from
-              the GUI, the CLI, or <code>config.json</code>. Enough to run
-              a network that touches no infrastructure you don't own.
-            </p>
+            <div class="how-step">⌁</div>
+            <h3>The fleet self-discovers it</h3>
+            <p>Hosts advertise the roles they offer, so peers find your relay and STUN/TURN on their own — no URLs to hand out. Run a network on infrastructure only you own.</p>
           </article>
         </div>
       </div>
@@ -224,48 +195,22 @@ cargo install --path crates/myownmesh         <span class="c"># myownmesh on $PA
           <article class="how-card">
             <div class="how-step">1</div>
             <h3>The room finds the peers</h3>
-            <p>
-              Each device subscribes to a room handle derived from
-              <code>SHA-256(app_id || ":" || network_id)</code> on a
-              signaling relay — the project's by default, or yours.
-              No DNS-SD, no DHT, no account, no broker you have to
-              trust with anything but a rendezvous.
-            </p>
+            <p>Each device subscribes to a room handle derived from your app + network ID — on the project's relay or yours. No DNS-SD, no DHT, no account.</p>
           </article>
           <article class="how-card">
             <div class="how-step">2</div>
             <h3>WebRTC carries the bytes</h3>
-            <p>
-              Once two peers find each other, they hand off to a
-              DTLS-secured WebRTC data channel — direct if NAT lets them,
-              STUN/TURN-assisted if it doesn't. The relay never sees your
-              traffic. Pure <code>webrtc-rs</code>; no libp2p, no custom
-              UDP.
-            </p>
+            <p>Peers hand off to a DTLS-secured data channel — direct when NAT allows, STUN/TURN-assisted when it doesn't. The relay never sees your traffic.</p>
           </article>
           <article class="how-card">
             <div class="how-step">3</div>
-            <h3>ed25519 confirms it's really them</h3>
-            <p>
-              The first handshake exchanges nonces, each side signs the
-              other's under a domain-tag, and a short
-              <code>[a-z0-9]</code> code rides along for eyeball
-              confirmation. Approved peers persist in a per-network
-              roster and skip the prompt next time. The signatures are
-              what establish trust — not the relay.
-            </p>
+            <h3>ed25519 proves it's them</h3>
+            <p>A signed nonce exchange plus a short confirmation code authenticates each peer; approved peers persist in a roster. The signatures establish trust — not the relay.</p>
           </article>
           <article class="how-card">
             <div class="how-step">4</div>
-            <h3>It heals itself — fast</h3>
-            <p>
-              A seven-tier ladder takes the cheapest action that recovers
-              each failure class, from a wake probe to an ICE restart to a
-              full room rejoin. Close the lid and reopen it and the mesh
-              notices the resume, redials, and has you back among your
-              peers in seconds. Every tunable is in
-              <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/CONNECTION-ENGINE.md">CONNECTION-ENGINE.md</a>.
-            </p>
+            <h3>It heals itself, fast</h3>
+            <p>A seven-tier ladder takes the cheapest recovery for each failure. Close the lid and reopen — it spots the resume, redials, and you're back among your peers in seconds.</p>
           </article>
         </div>
       </div>
@@ -275,72 +220,30 @@ cargo install --path crates/myownmesh         <span class="c"># myownmesh on $PA
       <div class="inner">
         <h2>Embed in your Rust app</h2>
         <p class="section-lede">
-          The library crates aren't on crates.io yet — pull them as git
-          dependencies pinned to a release tag. Cargo dedupes by URL,
-          so both crates resolve out of the same checkout.
+          Pull the crates as git dependencies pinned to a release tag — your app's devices are meshed in about fifteen lines.
         </p>
 <pre><code><span class="c">[dependencies]</span>
 myownmesh-core      = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.1.10</span>" }
-myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.1.10</span>" }  <span class="c"># Nostr driver</span>
+myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.1.10</span>" }
 tokio = { version = "1", features = ["full"] }</code></pre>
-<pre><code>use myownmesh_core::{Mesh, MeshConfig, NetworkConfig, TopologyMode};
+<pre><code>let mesh = Mesh::open(MeshConfig::load().unwrap_or_default()).await?;
 
-#[tokio::main]
-async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    let mesh = Mesh::open(MeshConfig::load().unwrap_or_default()).await?;
+let net = mesh.join(NetworkConfig {
+    id: "home".into(),
+    network_id: "my-cool-mesh".into(),
+    ..Default::default()
+}).await?;
 
-    let net = mesh.join(NetworkConfig {
-        id: "home".into(),
-        network_id: "my-cool-mesh".into(),
-        label: "Home mesh".into(),
-        topology: TopologyMode::default(),       <span class="c">// Ring</span>
-        signaling: Default::default(),            <span class="c">// reference relay; or point at your own</span>
-        stun_servers: Default::default(),
-        turn_servers: Default::default(),
-        roster_path: None,
-        auto_approve: false,
-    }).await?;
+let _nostr = myownmesh_core::engine::attach_nostr(&amp;net.state());
 
-    let _nostr = myownmesh_core::engine::attach_nostr(&amp;net.state());
-
-    let mut events = mesh.events();
-    while let Ok(event) = events.recv().await {
-        println!("{event:?}");
-    }
-    Ok(())
+let mut events = mesh.events();
+while let Ok(event) = events.recv().await {
+    println!("{event:?}");          <span class="c">// peers join, messages arrive</span>
 }</code></pre>
         <p class="section-foot">
-          Set <code>MYOWNMESH_HOME=~/.yourapp/mesh</code> to keep your
-          app's identity and rosters under its own directory tree
-          (defaults to <code>~/.myownmesh/</code>). Full walkthrough in
-          <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/QUICKSTART.md">docs/QUICKSTART.md</a> —
-          covers typed <code>Channel&lt;T&gt;</code>, generic
-          <code>Rpc</code>, the approval workflow, and clean shutdown.
-        </p>
-      </div>
-    </section>
-
-    <section id="cli" class="cli">
-      <div class="inner">
-        <h2>The daemon, day-to-day</h2>
-        <p class="section-lede">
-          Once <code>myownmesh</code> is on your PATH, the CLI drives
-          everything else.
-        </p>
-<pre><code>myownmesh                  <span class="c"># start the daemon (alias for `serve`)</span>
-myownmesh serve            <span class="c"># run the daemon in foreground</span>
-myownmesh service install  <span class="c"># run at boot/login (systemd · launchd)</span>
-myownmesh ctl status       <span class="c"># query a running daemon</span>
-myownmesh ctl services status   <span class="c"># relay / signaling / STUN / TURN, live</span>
-myownmesh install caddy my.domain   <span class="c"># TLS in front of your relay, one shot</span>
-myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $EDITOR</span></code></pre>
-        <p class="section-foot">
-          The daemon reads <code>~/.myownmesh/config.json</code>, joins
-          every network listed there, attaches the signaling driver per
-          network, and listens for <code>myownmesh ctl …</code> clients on
-          a local socket (<code>~/.myownmesh/daemon.sock</code> on Unix, a
-          named pipe on Windows). Crashing the GUI never disturbs the
-          running mesh.
+          Typed <code>Channel&lt;T&gt;</code>, generic <code>Rpc</code>, the
+          approval workflow, and clean shutdown are in the
+          <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/QUICKSTART.md">quickstart</a>.
         </p>
       </div>
     </section>
@@ -352,30 +255,22 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
           <div class="persona">
             <div class="persona-tag">bin</div>
             <div class="persona-name"><code>myownmesh</code></div>
-            <div class="persona-desc">Headless daemon + CLI. The thing the installer drops on your PATH.</div>
+            <div class="persona-desc">Headless daemon + CLI — what the installer drops on your PATH.</div>
             <div class="persona-path">crates/myownmesh</div>
           </div>
           <div class="persona">
             <div class="persona-tag">lib</div>
             <div class="persona-name"><code>myownmesh-core</code></div>
-            <div class="persona-desc">The runtime, engine, and protocol. What you depend on to embed the mesh.</div>
+            <div class="persona-desc">The runtime, engine, and protocol — what you embed.</div>
             <div class="persona-path">crates/myownmesh-core</div>
           </div>
           <div class="persona">
             <div class="persona-tag">app</div>
             <div class="persona-name"><code>myownmesh-gui</code></div>
-            <div class="persona-desc">Desktop GUI — Tauri + Svelte 5. A client of the daemon over its local control socket.</div>
+            <div class="persona-desc">Desktop app — Tauri + Svelte 5, a client of the daemon.</div>
             <div class="persona-path">gui/</div>
           </div>
         </div>
-        <p class="persona-foot">
-          Plus two supporting library crates the daemon and embedders
-          share: <code>myownmesh-signaling</code> (the relay driver +
-          in-process LocalBroker for tests) and
-          <code>myownmesh-updater</code> (self-update against a
-          configurable release feed). An app embedding
-          <code>myownmesh-core</code> pulls neither.
-        </p>
       </div>
     </section>
 
@@ -384,28 +279,20 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
         <h2>Where it's at</h2>
         <div class="status-grid">
           <div class="status-item">
-            <div class="status-label">Version</div>
-            <div class="status-value"><span id="version-status">0.1.10</span> — alpha. Wire format and API may still move; pin git tags.</div>
+            <div class="status-label">Stage</div>
+            <div class="status-value"><span id="version-status">0.1.10</span> — alpha. Wire format and API may move; pin git tags.</div>
           </div>
           <div class="status-item">
-            <div class="status-label">Library on crates.io</div>
-            <div class="status-value">Not yet. Use git dependencies pinned to a release tag.</div>
+            <div class="status-label">Self-hosting</div>
+            <div class="status-value">First-class — relay, signaling, STUN, and TURN all shippable today.</div>
           </div>
           <div class="status-item">
-            <div class="status-label">Run your own, end to end</div>
-            <div class="status-value">A device can host every piece of the plumbing itself — relay routing, a signaling relay (front it with <code>myownmesh install caddy</code>), and STUN / TURN. Toggle each from the GUI, the CLI, or <code>config.json</code>; hosts advertise their roles so the fleet self-discovers them. Enough to run a network on no infrastructure you don't own. See <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/SERVICES.md">docs/SERVICES.md</a>.</div>
+            <div class="status-label">Governance</div>
+            <div class="status-value">Open and closed networks, with roles enforced on the wire.</div>
           </div>
           <div class="status-item">
-            <div class="status-label">Network governance</div>
-            <div class="status-value">Both <em>open</em> (default — any member writes to the roster) and <em>closed</em> (Member / Controller / Owner roles, authority enforced on the wire) ship today. Lifecycle in <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/NETWORK-TYPES.md">docs/NETWORK-TYPES.md</a>.</div>
-          </div>
-          <div class="status-item">
-            <div class="status-label">Resilience</div>
-            <div class="status-value">The seven-tier reconnection ladder, the verification-code approval UX, and the per-network roster model were all hardened through real production use before being generalised into the library.</div>
-          </div>
-          <div class="status-item">
-            <div class="status-label">What's next</div>
-            <div class="status-value">More automatic relay, ring, and network formation — so a mesh spread across LANs, tailnets, and domains stitches itself together with even less to configure.</div>
+            <div class="status-label">Next</div>
+            <div class="status-value">Automatic relay, ring, and network formation across LANs, tailnets, and domains.</div>
           </div>
         </div>
       </div>
@@ -417,11 +304,11 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
         <div class="doc-grid">
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/QUICKSTART.md">
             <div class="doc-name">QUICKSTART</div>
-            <div class="doc-desc">Embedder walkthrough — identity, joining a network, channels, RPC, clean shutdown.</div>
+            <div class="doc-desc">Embedder walkthrough — identity, networks, channels, RPC, shutdown.</div>
           </a>
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/SERVICES.md">
             <div class="doc-name">SERVICES</div>
-            <div class="doc-desc">Host relay / signaling / STUN / TURN — run a fully self-hosted, internet-isolated network.</div>
+            <div class="doc-desc">Host relay / signaling / STUN / TURN — a fully self-hosted network.</div>
           </a>
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/PROTOCOL.md">
             <div class="doc-name">PROTOCOL</div>
@@ -429,7 +316,7 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
           </a>
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/NETWORK-TYPES.md">
             <div class="doc-name">NETWORK-TYPES</div>
-            <div class="doc-desc">Open vs closed networks — role tiers, signed transitions, split + recovery.</div>
+            <div class="doc-desc">Open vs closed — role tiers, signed transitions, split + recovery.</div>
           </a>
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/ARCHITECTURE.md">
             <div class="doc-name">ARCHITECTURE</div>
@@ -438,14 +325,6 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/CONNECTION-ENGINE.md">
             <div class="doc-name">CONNECTION-ENGINE</div>
             <div class="doc-desc">The 7-tier reconnection ladder, every tunable, every edge case.</div>
-          </a>
-          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/CONTRIBUTING.md">
-            <div class="doc-name">CONTRIBUTING</div>
-            <div class="doc-desc">Setup, code conventions, protocol-message checklist, topology-mode checklist.</div>
-          </a>
-          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/gui/README.md">
-            <div class="doc-name">GUI</div>
-            <div class="doc-desc">Desktop GUI layout + wire protocol against the daemon.</div>
           </a>
         </div>
       </div>

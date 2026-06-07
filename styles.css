@@ -782,6 +782,84 @@ section h2 {
   font-style: normal;
 }
 
+/* Terminal showcase — show the tools, don't describe them */
+.show {
+  background: var(--bg-deep);
+}
+.term-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+@media (max-width: 760px) {
+  .term-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.term {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: #151515;
+  border-bottom: 1px solid var(--border);
+}
+.term-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #2a2a2a;
+}
+.term-cap {
+  margin-left: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+.term-body {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--text-mute);
+}
+.term-body .p {
+  color: var(--accent);
+}
+.term-body .cmd {
+  color: var(--text-strong);
+}
+.term-body .ok,
+.term-body .on {
+  color: var(--good);
+}
+.term-body .v {
+  color: var(--accent-bright);
+}
+.term-body .dim {
+  color: var(--text-dim);
+}
+
+/* Get-it platform row (reuses the download page's chip buttons) */
+.get-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.5rem;
+  margin: 0.25rem 0 1rem;
+}
+
 /* Last section seam */
 section:last-of-type {
   border-bottom: none;
