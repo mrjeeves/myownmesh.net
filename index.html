@@ -7,7 +7,7 @@
   <meta name="description" content="A pure-Rust peer-to-peer substrate for apps whose devices need to find and talk to each other directly. Embed it as a library, run it as a daemon, or drive it with the desktop GUI." />
   <link rel="stylesheet" href="styles.css?v=3" />
   <meta property="og:title" content="MyOwnMesh — peer-to-peer mesh networking" />
-  <meta property="og:description" content="Devices on the same network ID find each other through public Nostr relays, then talk over encrypted WebRTC. No central server, no port forwarding, no static IPs." />
+  <meta property="og:description" content="Devices on the same network ID find each other through public Nostr relays — or signaling, STUN, and TURN servers you host yourself — then talk over encrypted WebRTC. No central server, no port forwarding, no static IPs." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://myownmesh.net/" />
   <meta name="theme-color" content="#0f0f0f" />
@@ -41,7 +41,8 @@
           MyOwnMesh is a pure-Rust substrate for apps whose devices need
           to find and talk to each other directly. Devices on the same
           <em>network ID</em> discover each other through public Nostr
-          relays, then talk over encrypted WebRTC — no central server you
+          relays — or a signaling, STUN, and TURN server you host
+          yourself — then talk over encrypted WebRTC. No central server you
           run, no port forwarding, no static IPs.
         </p>
         <p class="lede">
@@ -330,6 +331,10 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
             <div class="status-value">Both <em>open</em> (default — any member writes to the roster) and <em>closed</em> (Member / Controller / Owner roles, authority enforced on the wire) ship today. Lifecycle in <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/NETWORK-TYPES.md">docs/NETWORK-TYPES.md</a>.</div>
           </div>
           <div class="status-item">
+            <div class="status-label">Self-hosting &amp; isolated networks</div>
+            <div class="status-value">A device can host the mesh's plumbing itself — relay routing, a signaling relay (a Nostr-compatible server you point peers at in place of public relays), and STUN / TURN servers. Toggle them from the GUI, the CLI, or <code>config.json</code>; hosts advertise their roles so the fleet self-discovers them. Enough to run a network with no public infrastructure at all. See <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/SERVICES.md">docs/SERVICES.md</a>.</div>
+          </div>
+          <div class="status-item">
             <div class="status-label">Field testing</div>
             <div class="status-value">The 7-tier reconnection ladder, the verification-code UX, and the per-network roster model were all bug-tested inside <a class="link" href="https://github.com/mrjeeves/MyOwnLLM">MyOwnLLM</a> first, then lifted into pure Rust and generalised.</div>
           </div>
@@ -352,6 +357,10 @@ myownmesh config edit      <span class="c"># open ~/.myownmesh/config.json in $E
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/NETWORK-TYPES.md">
             <div class="doc-name">NETWORK-TYPES</div>
             <div class="doc-desc">Open vs closed networks — role tiers, signed transitions, split + recovery.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/SERVICES.md">
+            <div class="doc-name">SERVICES</div>
+            <div class="doc-desc">Host relay / signaling / STUN / TURN — run a fully self-hosted, internet-isolated network.</div>
           </a>
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/ARCHITECTURE.md">
             <div class="doc-name">ARCHITECTURE</div>
