@@ -48,7 +48,7 @@
         </div>
         <div class="badge-row">
           <span class="badge">MIT</span>
-          <span class="badge"><span id="version-badge">v0.1.10</span> · alpha</span>
+          <span class="badge"><span id="version-badge">v0.2.0</span> · alpha</span>
           <span class="badge">macOS · Linux · Windows · Pi</span>
         </div>
       </div>
@@ -223,8 +223,8 @@ relay      <span class="on">●</span> running            2 networks</div>
           Pull the crates as git dependencies pinned to a release tag — your app's devices are meshed in about fifteen lines.
         </p>
 <pre><code><span class="c">[dependencies]</span>
-myownmesh-core      = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.1.10</span>" }
-myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.1.10</span>" }
+myownmesh-core      = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.2.0</span>" }
+myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.2.0</span>" }
 tokio = { version = "1", features = ["full"] }</code></pre>
 <pre><code>let mesh = Mesh::open(MeshConfig::load().unwrap_or_default()).await?;
 
@@ -280,7 +280,7 @@ while let Ok(event) = events.recv().await {
         <div class="status-grid">
           <div class="status-item">
             <div class="status-label">Stage</div>
-            <div class="status-value"><span id="version-status">0.1.10</span> — alpha. Wire format and API may move; pin git tags.</div>
+            <div class="status-value"><span id="version-status">0.2.0</span> — alpha. Wire format and API may move; pin git tags.</div>
           </div>
           <div class="status-item">
             <div class="status-label">Self-hosting</div>
