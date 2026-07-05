@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MyOwnMesh — a private mesh network you actually own</title>
-  <meta name="description" content="Your devices find each other and talk directly over encrypted WebRTC — no account, no port forwarding, no servers you don't run. Discovery, NAT traversal, and relay are all the same program: run it on a laptop, a tailnet, or your own domain." />
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <meta name="description" content="Your devices find each other and talk directly over encrypted WebRTC — zeroconf on the LAN over mDNS/DNS-SD, a relay you can run yourself beyond it, or fully air-gapped. No account, no port forwarding, no servers you don't run." />
+  <link rel="stylesheet" href="styles.css?v=5" />
   <meta property="og:title" content="MyOwnMesh — a private mesh network you actually own" />
-  <meta property="og:description" content="Devices find each other and talk over encrypted WebRTC. Run the whole stack — discovery, NAT traversal, relay — yourself, anywhere. No infrastructure you don't control." />
+  <meta property="og:description" content="Devices find each other on the LAN by themselves (mDNS/DNS-SD, on by default) and talk over encrypted WebRTC. Run the whole stack — discovery, NAT traversal, relay — yourself, anywhere. Even air-gapped." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://myownmesh.net/" />
   <meta name="theme-color" content="#0f0f0f" />
@@ -19,6 +19,7 @@
       <nav class="topnav">
         <a href="/download.html">Download</a>
         <a href="#get">Install</a>
+        <a href="#discovery">Discovery</a>
         <a href="/self-host.html">Run your own</a>
         <a href="#how">How it works</a>
         <a href="#embed">Embed</a>
@@ -36,20 +37,80 @@
   <main>
     <section class="hero">
       <div class="hero-inner">
-        <h1>A private mesh network<br />you actually own.</h1>
-        <p class="lede">
-          Your devices find each other and talk <em>directly</em> —
-          encrypted end to end. No account, no port forwarding, no static
-          IPs, and no servers you don't run.
-        </p>
-        <div class="cta-row">
-          <a class="btn primary" href="/download.html">Download the app</a>
-          <a class="btn ghost" href="#get">Install from the terminal</a>
+        <div>
+          <h1>A private mesh network you&nbsp;actually&nbsp;own.</h1>
+          <p class="lede">
+            Your devices find each other and talk <em>directly</em> —
+            encrypted end to end. On the same LAN they discover each other
+            <em>by themselves</em>, over mDNS/DNS-SD. No account, no port
+            forwarding, no static IPs, and no servers you don't run.
+          </p>
+          <div class="cta-row">
+            <a class="btn primary" href="/download.html">Download the app</a>
+            <a class="btn ghost" href="#get">Install from the terminal</a>
+          </div>
+          <div class="badge-row">
+            <span class="badge">MIT</span>
+            <span class="badge"><span id="version-badge">v0.2.30</span> · alpha</span>
+            <span class="badge">zeroconf · mDNS/DNS-SD</span>
+            <span class="badge">macOS · Linux · Windows · Pi</span>
+          </div>
         </div>
-        <div class="badge-row">
-          <span class="badge">MIT</span>
-          <span class="badge"><span id="version-badge">v0.2.0</span> · alpha</span>
-          <span class="badge">macOS · Linux · Windows · Pi</span>
+
+        <!-- The LAN, finding itself. Pure CSS/SVG — no library, no video. -->
+        <div class="mesh-viz" role="img" aria-label="Diagram: four devices on one LAN discover each other over mDNS/DNS-SD and connect directly, without any server.">
+          <div class="viz-dots"></div>
+          <div class="viz-head">
+            <span>your LAN · 192.168.1.0/24</span>
+            <span><span class="on">●</span> mdns — on by default</span>
+          </div>
+          <!-- ring wiring between the four peers -->
+          <svg class="viz-wires" viewBox="0 0 520 430" preserveAspectRatio="none" aria-hidden="true">
+            <!-- kestrel → den-tower -->
+            <path class="viz-wire" d="M 146 118 C 220 84, 320 84, 390 100" />
+            <path class="viz-flow" d="M 146 118 C 220 84, 320 84, 390 100" />
+            <!-- den-tower → nas -->
+            <path class="viz-wire" d="M 396 128 C 420 190, 420 250, 398 300" />
+            <path class="viz-flow" d="M 396 128 C 420 190, 420 250, 398 300" />
+            <!-- nas → pi -->
+            <path class="viz-wire" d="M 360 322 C 300 352, 200 352, 142 330" />
+            <path class="viz-flow" d="M 360 322 C 300 352, 200 352, 142 330" />
+            <!-- pi → kestrel -->
+            <path class="viz-wire" d="M 120 302 C 100 250, 102 180, 132 132" />
+            <path class="viz-flow" d="M 120 302 C 100 250, 102 180, 132 132" />
+            <!-- the new peer's DNS-SD record, tethered -->
+            <path class="viz-tether" d="M 378 306 L 300 250" />
+          </svg>
+          <!-- mDNS beacon, pulsing from the newest peer -->
+          <span class="viz-ping" style="left: 74%; top: 74%;"></span>
+          <span class="viz-ping" style="left: 74%; top: 74%; animation-delay: 1.7s;"></span>
+          <!-- the peers -->
+          <div class="viz-node" style="left: 26%; top: 26%;">
+            <span class="ico" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M2 19.5h20"/></svg></span>
+            <div><div class="nm">kestrel</div><div class="st"><span class="on">●</span> direct · this device</div></div>
+          </div>
+          <div class="viz-node" style="left: 76%; top: 22%;">
+            <span class="ico" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="1.5"/><path d="M11 7h2M11 11h2"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg></span>
+            <div><div class="nm">den-tower</div><div class="st"><span class="on">●</span> direct · 2 ms</div></div>
+          </div>
+          <div class="viz-node" style="left: 24%; top: 74%;">
+            <span class="ico" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="1.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/></svg></span>
+            <div><div class="nm">pi-closet</div><div class="st"><span class="on">●</span> headless daemon</div></div>
+          </div>
+          <div class="viz-node is-new" style="left: 74%; top: 74%;">
+            <span class="ico" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="10" rx="2"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg></span>
+            <div><div class="nm">nas-01</div><div class="st"><span class="nw">◆</span> just announced itself</div></div>
+          </div>
+          <!-- the DNS-SD record it announced -->
+          <div class="viz-record" style="left: 50%; top: 50%;">
+            <span class="rr-name">_myownmesh._tcp.local.</span><br />
+            <span class="rr-k">TXT</span> <span class="rr-v">room=a1b2c3d4…</span><br />
+            <span class="rr-k">SRV</span> <span class="rr-v">:53412 → sdp, unicast</span>
+          </div>
+          <div class="viz-foot">
+            <span><span class="hi">4 peers</span> · all direct</span>
+            <span>servers touched: <span class="hi">0</span></span>
+          </div>
         </div>
       </div>
     </section>
@@ -61,13 +122,14 @@
           <div class="term">
             <div class="term-bar">
               <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
-              <span class="term-cap">two machines, one network</span>
+              <span class="term-cap">LAN peer via DNS-SD, no server · remote peer via relay</span>
             </div>
 <div class="term-body"><span class="p">$</span> <span class="cmd">myownmesh serve</span>
+mdns: advertising <span class="v">_myownmesh._tcp.local.</span> · room <span class="v">a1b2c3d4…</span>
 signaling: online — listening in room <span class="v">a1b2c3d4…</span>
-peer <span class="v">6f2e…</span> discovered → connecting
-peer <span class="v">6f2e…</span> <span class="on">ACTIVE</span>   direct · 14 ms
-peer <span class="v">9c81…</span> <span class="on">ACTIVE</span>   relay  · 38 ms</div>
+peer <span class="v">6f2e…</span> found on the LAN → connecting
+peer <span class="v">6f2e…</span> <span class="on">ACTIVE</span>   direct · 3 ms   <span class="dim">(mdns)</span>
+peer <span class="v">9c81…</span> <span class="on">ACTIVE</span>   relay  · 38 ms  <span class="dim">(nostr)</span></div>
           </div>
           <div class="term">
             <div class="term-bar">
@@ -80,6 +142,85 @@ peer <span class="v">9c81…</span> <span class="on">ACTIVE</span>   relay  · 3
 <span class="ok">✓</span> Reloaded Caddy.
 Done. Peers can now reach you at  <span class="v">wss://myownmesh.com</span></div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="discovery" class="show">
+      <div class="inner">
+        <h2>Three ways peers find each other<span class="new-chip">new in 0.2.26</span></h2>
+        <p class="section-lede">
+          Every network now runs mDNS/DNS-SD beside its relay — pure Rust,
+          no Avahi, no Bonjour — so the fastest path is often no server at all.
+        </p>
+        <div class="disc-grid">
+          <article class="disc is-new">
+            <div class="disc-stage" aria-hidden="true">
+              <svg viewBox="0 0 260 158">
+                <circle class="d-ping" cx="75" cy="82" r="58" fill="none" stroke="#8b8bff" stroke-width="1.5" />
+                <circle class="d-ping d2" cx="75" cy="82" r="58" fill="none" stroke="#8b8bff" stroke-width="1.5" />
+                <path d="M 96 82 L 164 82" stroke="#8b8bff" stroke-width="1.6" opacity="0.5" />
+                <path class="d-flow" d="M 96 82 L 164 82" stroke="#b9b9ff" stroke-width="1.6" />
+                <rect x="55" y="66" width="40" height="32" rx="6" fill="#131320" stroke="#2a2a40" />
+                <rect x="164" y="66" width="40" height="32" rx="6" fill="#131320" stroke="#2a2a40" />
+                <circle cx="75" cy="82" r="3.5" fill="#8b8bff" />
+                <circle cx="184" cy="82" r="3.5" fill="#8b8bff" />
+                <text x="130" y="70" text-anchor="middle" fill="#6a6a85" font-family="ui-monospace, monospace" font-size="8.5">direct · 3 ms</text>
+                <text x="130" y="128" text-anchor="middle" fill="#8b8bff" font-family="ui-monospace, monospace" font-size="9">_myownmesh._tcp.local.</text>
+              </svg>
+            </div>
+            <div class="disc-body">
+              <h3>Same room? No server.</h3>
+              <p>On a shared LAN peers register a DNS-SD service, spot each other, and dial direct. Clock-free — a device fresh out of the box, before NTP, still gets found.</p>
+              <div class="disc-conf"><span class="k">"signaling":</span> { <span class="k">"mdns":</span> <span class="on">true</span> }   <span class="k">// the default</span></div>
+            </div>
+          </article>
+          <article class="disc">
+            <div class="disc-stage" aria-hidden="true">
+              <svg viewBox="0 0 260 158">
+                <path d="M 60 108 C 90 60, 170 60, 200 108" stroke="#8b8bff" stroke-width="1.6" fill="none" opacity="0.5" />
+                <path class="d-flow" d="M 60 108 C 90 60, 170 60, 200 108" stroke="#b9b9ff" stroke-width="1.6" fill="none" />
+                <path d="M 60 108 L 122 38 M 200 108 L 138 38" stroke="#6a6a85" stroke-width="1" stroke-dasharray="3 5" opacity="0.7" />
+                <circle cx="130" cy="32" r="9" fill="none" stroke="#8b8bff" stroke-width="1.5" />
+                <circle cx="130" cy="32" r="2.5" fill="#8b8bff" />
+                <rect x="40" y="92" width="40" height="32" rx="6" fill="#131320" stroke="#2a2a40" />
+                <rect x="180" y="92" width="40" height="32" rx="6" fill="#131320" stroke="#2a2a40" />
+                <circle cx="60" cy="108" r="3.5" fill="#8b8bff" />
+                <circle cx="200" cy="108" r="3.5" fill="#8b8bff" />
+                <text x="130" y="18" text-anchor="middle" fill="#6a6a85" font-family="ui-monospace, monospace" font-size="8.5">the relay only introduces</text>
+                <text x="130" y="100" text-anchor="middle" fill="#6a6a85" font-family="ui-monospace, monospace" font-size="8.5">traffic stays direct</text>
+              </svg>
+            </div>
+            <div class="disc-body">
+              <h3>Different networks? A room handle.</h3>
+              <p>Peers meet in a room at a signaling relay — the project's, or yours with one command. It brokers the handshake and never sees your traffic.</p>
+              <div class="disc-conf">myownmesh install caddy <span class="v">your-domain</span></div>
+            </div>
+          </article>
+          <article class="disc is-new">
+            <div class="disc-stage" aria-hidden="true">
+              <svg viewBox="0 0 260 158">
+                <path d="M 108 30 a 14 14 0 0 1 27 -3 a 11 11 0 0 1 9 20 h -40 a 11 11 0 0 1 4 -17" fill="none" stroke="#6a6a85" stroke-width="1.5" opacity="0.7" />
+                <path d="M 100 14 L 162 52" stroke="#ffb4b4" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+                <path d="M 75 112 L 130 90 L 185 112" stroke="#8b8bff" stroke-width="1.6" fill="none" opacity="0.5" />
+                <path class="d-flow" d="M 75 112 L 130 90 L 185 112" stroke="#b9b9ff" stroke-width="1.6" fill="none" />
+                <path d="M 75 112 L 185 112" stroke="#8b8bff" stroke-width="1.6" opacity="0.5" />
+                <path class="d-flow" d="M 75 112 L 185 112" stroke="#b9b9ff" stroke-width="1.6" />
+                <rect x="55" y="96" width="40" height="32" rx="6" fill="#131320" stroke="#2a2a40" />
+                <rect x="165" y="96" width="40" height="32" rx="6" fill="#131320" stroke="#2a2a40" />
+                <rect x="110" y="74" width="40" height="32" rx="6" fill="#131320" stroke="#2a2a40" />
+                <circle cx="75" cy="112" r="3.5" fill="#8b8bff" />
+                <circle cx="185" cy="112" r="3.5" fill="#8b8bff" />
+                <circle cx="130" cy="90" r="3.5" fill="#8b8bff" />
+                <text x="130" y="150" text-anchor="middle" fill="#6a6a85" font-family="ui-monospace, monospace" font-size="8.5">no internet · still a mesh</text>
+              </svg>
+            </div>
+            <div class="disc-body">
+              <h3>No internet? No problem.</h3>
+              <p>Set the strategy to <code>"none"</code>, leave mDNS on, and co-located devices form a fully air-gapped mesh — zero remote infrastructure, same encryption.</p>
+              <div class="disc-conf"><span class="k">"strategy":</span> <span class="v">"none"</span> · <span class="k">"mdns":</span> <span class="on">true</span></div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -197,8 +338,8 @@ relay      <span class="on">●</span> running            2 networks</div>
         <div class="how-grid">
           <article class="how-card">
             <div class="how-step">1</div>
-            <h3>The room finds the peers</h3>
-            <p>Each device subscribes to a room handle derived from your app + network ID — on the project's relay or yours. No DNS-SD, no DHT, no account.</p>
+            <h3>The LAN finds your peers first</h3>
+            <p>Peers advertise <code>_myownmesh._tcp.local.</code> and browse for their room right on the local network — DNS-SD, pure Rust, no Avahi. Beyond the LAN, a room handle on your relay (or ours) makes the introductions. Both run at once; duplicates get deduped.</p>
           </article>
           <article class="how-card">
             <div class="how-step">2</div>
@@ -226,18 +367,14 @@ relay      <span class="on">●</span> running            2 networks</div>
           Pull the crates as git dependencies pinned to a release tag — your app's devices are meshed in about fifteen lines.
         </p>
 <pre><code><span class="c">[dependencies]</span>
-myownmesh-core      = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.2.0</span>" }
-myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.2.0</span>" }
+myownmesh-core      = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.2.30</span>" }
+myownmesh-signaling = { git = "https://github.com/mrjeeves/MyOwnMesh", tag = "<span class="js-dep-tag">v0.2.30</span>" }
 tokio = { version = "1", features = ["full"] }</code></pre>
 <pre><code>let mesh = Mesh::open(MeshConfig::load().unwrap_or_default()).await?;
 
-let net = mesh.join(NetworkConfig {
-    id: "home".into(),
-    network_id: "my-cool-mesh".into(),
-    ..Default::default()
-}).await?;
+let net = mesh.join(NetworkConfig::from_network_id("home", "my-cool-mesh")).await?;
 
-let _nostr = myownmesh_core::engine::attach_nostr(&amp;net.state());
+let _signaling = myownmesh_core::engine::attach_signaling(&amp;net.state());  <span class="c">// Nostr + mDNS</span>
 
 let mut events = mesh.events();
 while let Ok(event) = events.recv().await {
@@ -283,19 +420,19 @@ while let Ok(event) = events.recv().await {
         <div class="status-grid">
           <div class="status-item">
             <div class="status-label">Stage</div>
-            <div class="status-value"><span id="version-status">0.2.0</span> — alpha. Wire format and API may move; pin git tags.</div>
+            <div class="status-value"><span id="version-status">0.2.30</span> — alpha. Wire format and API may move; pin git tags.</div>
+          </div>
+          <div class="status-item">
+            <div class="status-label">Discovery</div>
+            <div class="status-value">mDNS/DNS-SD on by default beside the relay; LAN-local and air-gapped networks are first-class.</div>
           </div>
           <div class="status-item">
             <div class="status-label">Self-hosting</div>
             <div class="status-value">First-class — relay, signaling, STUN, and TURN all shippable today.</div>
           </div>
           <div class="status-item">
-            <div class="status-label">Governance</div>
-            <div class="status-value">Open and closed networks, with roles enforced on the wire.</div>
-          </div>
-          <div class="status-item">
             <div class="status-label">Next</div>
-            <div class="status-value">Automatic relay, ring, and network formation across LANs, tailnets, and domains.</div>
+            <div class="status-value">Transparent relay fallback and topology auto-election, building on the LAN and air-gap formation shipped in 0.2.26.</div>
           </div>
         </div>
       </div>
@@ -312,6 +449,10 @@ while let Ok(event) = events.recv().await {
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/SERVICES.md">
             <div class="doc-name">SERVICES</div>
             <div class="doc-desc">Host relay / signaling / STUN / TURN — a fully self-hosted network.</div>
+          </a>
+          <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/crates/myownmesh-signaling/README.md">
+            <div class="doc-name">SIGNALING</div>
+            <div class="doc-desc">The Nostr + mDNS/DNS-SD drivers — rooms, TXT records, the dedupe gate.</div>
           </a>
           <a class="doc" href="https://github.com/mrjeeves/MyOwnMesh/blob/main/docs/PROTOCOL.md">
             <div class="doc-name">PROTOCOL</div>
@@ -341,7 +482,8 @@ while let Ok(event) = events.recv().await {
         <span class="foot-platforms">
           <code>linux-x86_64</code> · <code>linux-aarch64</code> ·
           <code>macos-aarch64</code> · <code>macos-x86_64</code> ·
-          <code>windows-x86_64</code>
+          <code>windows-x86_64</code> · embedded:
+          <code>riscv64</code> · <code>aarch64-musl</code>
         </span>
       </div>
       <div class="foot-links">
