@@ -864,3 +864,312 @@ section h2 {
 section:last-of-type {
   border-bottom: none;
 }
+
+/* ════════════════════════════════════════════════════════════════
+   v5 — visual refresh: show the mesh, don't describe it.
+   Hero LAN panel · discovery triptych.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Hero goes two-up when there's room for the LAN panel */
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.75rem;
+  align-items: center;
+}
+@media (min-width: 1000px) {
+  .hero-inner {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  }
+  /* Narrower column than the old full-width hero — size the title to it
+     and let it balance into two clean lines. */
+  .hero h1 {
+    font-size: clamp(2.05rem, 2.95vw, 2.6rem);
+  }
+}
+.hero h1 {
+  text-wrap: balance;
+}
+
+/* ---- The LAN panel: devices finding each other, live ---- */
+.mesh-viz {
+  position: relative;
+  height: 430px;
+  background: linear-gradient(180deg, #101018, var(--bg-deep));
+  border: 1px solid var(--border-chip);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px -48px rgba(0, 0, 0, 0.9);
+}
+.viz-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(139, 139, 255, 0.11) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.viz-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(4px);
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  z-index: 5;
+}
+.viz-head .on { color: var(--good); }
+.viz-foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0.85rem;
+  border-top: 1px solid var(--border);
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(4px);
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  z-index: 5;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.viz-foot .hi { color: var(--accent-bright); }
+.viz-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.viz-wire {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.42;
+  vector-effect: non-scaling-stroke;
+}
+.viz-flow {
+  stroke: var(--accent-bright);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 2 11;
+  opacity: 0.95;
+  vector-effect: non-scaling-stroke;
+  animation: momFlow 1.25s linear infinite;
+}
+.viz-tether {
+  stroke: var(--text-faint);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  fill: none;
+  opacity: 0.55;
+  vector-effect: non-scaling-stroke;
+}
+@keyframes momFlow {
+  to { stroke-dashoffset: -26; }
+}
+.viz-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-chip);
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  box-shadow: 0 14px 34px -18px rgba(0, 0, 0, 0.95);
+  z-index: 3;
+}
+.viz-node.is-new { border-color: var(--accent-soft-border); }
+.viz-node .ico {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.viz-node .nm {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.viz-node .st {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.viz-node .st .on { color: var(--good); }
+.viz-node .st .nw { color: var(--accent-bright); }
+.viz-ping {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  opacity: 0;
+  z-index: 1;
+  animation: momPing 3.4s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes momPing {
+  0%   { width: 12px;  height: 12px;  opacity: 0.85; }
+  70%  { opacity: 0.12; }
+  100% { width: 340px; height: 340px; opacity: 0; }
+}
+.viz-record {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: rgba(12, 12, 18, 0.94);
+  border: 1px solid var(--accent-soft-border);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1.75;
+  color: var(--text-mute);
+  z-index: 4;
+  box-shadow: 0 0 30px rgba(139, 139, 255, 0.14), 0 18px 40px -20px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+}
+.viz-record .rr-name {
+  color: var(--accent-bright);
+  font-size: 0.7rem;
+}
+.viz-record .rr-k { color: var(--text-faint); }
+.viz-record .rr-v { color: var(--text); }
+.viz-lat {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: var(--bg-deep);
+  border: 1px solid var(--border-chip);
+  border-radius: 999px;
+  padding: 0.14rem 0.55rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--text-mute);
+  z-index: 4;
+  white-space: nowrap;
+}
+.viz-lat .on { color: var(--good); }
+
+/* ---- "New" pill ---- */
+.new-chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 0.14rem 0.55rem;
+  vertical-align: 0.35em;
+  margin-left: 0.5rem;
+}
+
+/* ---- Discovery triptych ---- */
+.disc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+@media (max-width: 900px) {
+  .disc-grid { grid-template-columns: 1fr; }
+}
+.disc {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.disc.is-new { border-color: var(--accent-soft-border); }
+.disc-stage {
+  position: relative;
+  height: 158px;
+  background:
+    radial-gradient(rgba(139, 139, 255, 0.08) 1px, transparent 1px) 0 0 / 20px 20px,
+    var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+}
+.disc-stage svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.disc-body {
+  padding: 1rem 1.1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+.disc-body h3 {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.disc-body p {
+  font-size: 0.86rem;
+  color: var(--text-mute);
+  line-height: 1.6;
+}
+.disc-conf {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  background: var(--bg-code);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 0.45rem 0.6rem;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.disc-conf .k { color: var(--text-faint); }
+.disc-conf .v { color: var(--accent-bright); }
+.disc-conf .on { color: var(--good); }
+
+/* small SVG anim bits used inside stages */
+.d-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dPing 2.8s ease-out infinite;
+}
+.d-ping.d2 { animation-delay: 1.4s; }
+@keyframes dPing {
+  0%   { transform: scale(0.15); opacity: 0.9; }
+  80%  { opacity: 0.1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+.d-flow {
+  stroke-dasharray: 2 9;
+  animation: momFlow 1.25s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viz-ping, .viz-flow, .d-ping, .d-flow { animation: none !important; }
+  .viz-ping { opacity: 0; }
+}

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Download MyOwnMesh — desktop app &amp; headless daemon</title>
   <meta name="description" content="Native installers for macOS, Windows, Linux and Raspberry Pi, plus the portable myownmesh daemon binary and one-line install scripts. Free and MIT-licensed." />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=5" />
   <meta property="og:title" content="Download MyOwnMesh" />
   <meta property="og:description" content="Desktop installers for macOS, Windows, Linux and Raspberry Pi, the portable headless daemon, and one-line install scripts." />
   <meta property="og:type" content="website" />
@@ -188,12 +188,22 @@
               <span class="dl-btn-title">Windows · x86_64</span>
               <span class="dl-btn-file">.zip</span>
             </a>
+            <a class="dl-btn" data-asset-pattern="myownmesh-linux-riscv64\.tar\.gz$" href="https://github.com/mrjeeves/MyOwnMesh/releases/latest">
+              <span class="dl-btn-title">Embedded · riscv64</span>
+              <span class="dl-btn-file">.tar.gz · static musl</span>
+            </a>
+            <a class="dl-btn" data-asset-pattern="myownmesh-linux-aarch64-musl\.tar\.gz$" href="https://github.com/mrjeeves/MyOwnMesh/releases/latest">
+              <span class="dl-btn-title">Embedded · aarch64 (musl)</span>
+              <span class="dl-btn-file">.tar.gz · static musl</span>
+            </a>
           </div>
           <p class="dl-tip">
             Each archive ships a matching <code>.sha256</code> sidecar on
             the <a class="link" href="https://github.com/mrjeeves/MyOwnMesh/releases/latest">releases page</a>;
             verify with <code>sha256sum -c</code>. Unpack and put
-            <code>myownmesh</code> somewhere on your <code>PATH</code>.
+            <code>myownmesh</code> somewhere on your <code>PATH</code>. The two
+            embedded tarballs are fully static, daemon-only builds for
+            boards and appliances.
           </p>
         </article>
       </div>
