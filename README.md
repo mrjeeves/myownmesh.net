@@ -36,3 +36,11 @@ cp ../MyOwnMesh/scripts/install.ps1 install.ps1
 Other content is sourced from the main repo's `README.md` and `docs/` —
 keep it in sync when those change.
 
+## Deploying
+
+GitHub Pages serves the `main` branch root; every push to `main`
+(including a PR merge) triggers the automatic "pages build and
+deployment" run. If a deploy fails with GitHub's transient
+"Deployment failed, try again later", re-run it from the Actions tab —
+or merge any commit to `main` to kick a fresh one.
+
